@@ -12,7 +12,7 @@ public class NetworkedClient : MonoBehaviour
     int reliableChannelID;
     int unreliableChannelID;
     int hostID;
-    int socketPort = 5491;
+    int socketPort = 5491; //socket being used
     byte error;
     bool isConnected = false;
     int ourClientID;
@@ -27,7 +27,7 @@ public class NetworkedClient : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.S))
-            SendMessageToHost("Hello from client");
+            SendMessageToHost("Hello from client"); //press S to get Msg
 
         UpdateNetworkConnection();
     }
@@ -42,7 +42,7 @@ public class NetworkedClient : MonoBehaviour
             byte[] recBuffer = new byte[1024];
             int bufferSize = 1024;
             int dataSize;
-            NetworkEventType recNetworkEvent = NetworkTransport.Receive(out recHostID, out recConnectionID, out recChannelID, recBuffer, bufferSize, out dataSize, out error);
+            NetworkEventType recNetworkEvent = NetworkTransport.Receive(out recHostID, out recConnectionID, out recChannelID, recBuffer, bufferSize, out dataSize, out error); //Passes in HostID, connectionID, ChannelID,datasize and error as referance. Takes in recbuffer and buffersize normally
 
             switch (recNetworkEvent)
             {
@@ -72,14 +72,15 @@ public class NetworkedClient : MonoBehaviour
 
             NetworkTransport.Init();
 
-            ConnectionConfig config = new ConnectionConfig();
-            reliableChannelID = config.AddChannel(QosType.Reliable);
-            unreliableChannelID = config.AddChannel(QosType.Unreliable);
-            HostTopology topology = new HostTopology(config, maxConnections);
+            ConnectionConfig config = new ConnectionConfig(); //adding channel to config and returning unique ID of the channel
+            reliableChannelID = config.AddChannel(QosType.Reliable);//garenteed to be delivered, order not garenteed
+            unreliableChannelID = config.AddChannel(QosType.Unreliable); //nothing garenteed
+            HostTopology topology = new HostTopology(config, maxConnections); //last step in creating a connection, letting the servert know what configuration will be used (how many default connections, what special connections)
             hostID = NetworkTransport.AddHost(topology, 0);
-            Debug.Log("Socket open.  Host ID = " + hostID);
+            Debug.Log("Socket open.  Host ID = " + hostID); //Adds host based on Networking.HostTopology. Returns the Host ID.
 
-            connectionID = NetworkTransport.Connect(hostID, "192.168.2.39", socketPort, 0, out error); // server is local on network
+
+            connectionID = NetworkTransport.Connect(hostID, "192.168.2.39", socketPort, 0, out error); // server is local on network (I did my local network)
 
             if (error == 0)
             {
@@ -91,18 +92,18 @@ public class NetworkedClient : MonoBehaviour
         }
     }
     
-    public void Disconnect()
+    public void Disconnect() //disconnects connection
     {
         NetworkTransport.Disconnect(hostID, connectionID, out error);
     }
     
-    public void SendMessageToHost(string msg)
+    public void SendMessageToHost(string msg) //sends mdg to host
     {
         byte[] buffer = Encoding.Unicode.GetBytes(msg);
-        NetworkTransport.Send(hostID, connectionID, reliableChannelID, buffer, msg.Length * sizeof(char), out error);
+        NetworkTransport.Send(hostID, connectionID, reliableChannelID, buffer, msg.Length * sizeof(char), out error); //sends msg as a bugger of bytes.  msg.Length * sizeof(char) = the number of chars * the bytes each char takes
     }
 
-    private void ProcessRecievedMsg(string msg, int id)
+    private void ProcessRecievedMsg(string msg, int id) //processes msg from buffer to string
     {
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
     }
