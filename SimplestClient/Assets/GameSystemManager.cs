@@ -16,7 +16,7 @@ public class GameSystemManager : MonoBehaviour
         GameObject[] allObject = UnityEngine.Object.FindObjectsOfType<GameObject>();
         foreach (GameObject go in allObject)
         {
-            if(go.name == "UserName Input")
+            if (go.name == "UserName Input")
             {
                 userNameInput = go;
             }
@@ -36,12 +36,16 @@ public class GameSystemManager : MonoBehaviour
             {
                 createToggle = go;
             }
+            else if (go.name == "NetworkedClient")
+            {
+                networkedClient = go;
+            }
         }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         loginToggle.GetComponent<Toggle>().onValueChanged.AddListener(LoginToggleChanged);
         createToggle.GetComponent<Toggle>().onValueChanged.AddListener(CreateToggleChanged);
-    }
 
+    }
     // Update is called once per frame
     void Update()
     {
