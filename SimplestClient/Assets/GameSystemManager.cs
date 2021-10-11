@@ -30,11 +30,11 @@ public class GameSystemManager : MonoBehaviour
             }
             else if (go.name == "LoginToggle")
             {
-                createToggle = go;
+                loginToggle = go;
             }
             else if (go.name == "CreateToggle")
             {
-                loginToggle = go;
+                createToggle = go;
             }
         }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
