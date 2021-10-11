@@ -28,9 +28,22 @@ public class NetworkedClient : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.S))
             SendMessageToHost("Hello from client"); //press S to get Msg
+        if (Input.GetKeyDown(KeyCode.C))
+            SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + ",1234,pass");
+        else if (Input.GetKeyDown(KeyCode.L))
+            SendMessageToHost(ClientToServerTransferSignifiers.Login + ",1234,pass");
+
+        else if (Input.GetKeyDown(KeyCode.M))
+            SendMessageToHost(ClientToServerTransferSignifiers.RequestMarkInformation + "");
+        else if (Input.GetKeyDown(KeyCode.I))
+            SendMessageToHost(ClientToServerTransferSignifiers.RequestAccountInformation + "");
+
+        else if (Input.GetKeyDown(KeyCode.D))
+            SendMessageToHost(ClientToServerTransferSignifiers.SubmitDiscordUserName + ",MemeMeister#7071");
 
         UpdateNetworkConnection();
     }
+    
 
     private void UpdateNetworkConnection()
     {
@@ -119,6 +132,10 @@ public static class ClientToServerSignifiers
 {
     public const int CreateAccount = 1;
     public const int LoginAccount = 2;
+    public const int RequestAccountInformation = 3;
+    public const int RequestMarkInformation = 4;
+
+
 
 }
 public static class ServerToClientSignifiers
@@ -128,5 +145,25 @@ public static class ServerToClientSignifiers
 
     public const int AccountCreationComplete = 3;
     public const int AccountCreationFailed = 4;
+
+}
+public static class ClientToServerTransferSignifiers
+{
+    public const int CreateAccount = 1;
+    public const int Login = 2;
+    public const int RequestAccountInformation = 3;
+    public const int RequestMarkInformation = 4;
+
+
+    public const int SubmitEmail = 101;
+    public const int SubmitDiscordUserName = 102;
+    public const int SubmitFirstName = 103;
+    public const int SubmitLastName = 104;
+    public const int SubmitStreamDataLabGitRepoLink = 105;
+    public const int SubmitNetworkedServerGitRepoLink = 106;
+    public const int SubmitNetworkedClientGitRepoLink = 107;
+    public const int SubmitAssignmentOneLink = 108;
+    public const int SubmitAssignmentTwoLink = 109;
+
 
 }
